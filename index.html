@@ -605,25 +605,71 @@
 
                 <div class="col-lg-5">
                   <div class="right-content" data-aos="fade-up">
-
+                
                     <div class="element-header align-right">
                       <h3>Feel free to send me a message or any word of appreciation.</h3>
                     </div>
-
+                
                     <div class="contact-form py-4">
-                      <form id="form" class="form-group">
-                        <div class="pb-2"><input type="text" name="name" placeholder="Your Full Name"
-                            class="form-control">
+                      <!-- Form -->
+                      <form id="form" class="form-group" action="http://localhost:3000/submit-form" method="POST">
+                        <div class="pb-2">
+                          <input type="text" name="name" placeholder="Your Full Name" class="form-control" required>
                         </div>
-                        <div class="pb-2"><input type="text" name="address" placeholder="Your Email Address"
-                            class="form-control"></div>
-                        <div class="pb-2"><textarea placeholder="Your Message" rows="6" class="form-control"></textarea>
+                        <div class="pb-2">
+                          <input type="email" name="email" placeholder="Your Email Address" class="form-control" required>
+                        </div>
+                        <div class="pb-2">
+                          <textarea name="message" placeholder="Your Message" rows="6" class="form-control" required></textarea>
                         </div>
                         <button type="submit" name="submit" class="btn btn-dark w-100 btn-rounded">Submit</button>
                       </form>
+                    
+                      <!-- Success Popup -->
+                      <div id="successPopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; background: #28a745; color: #fff; border-radius: 5px; text-align: center;">
+                        Message sent successfully!
+                      </div>
                     </div>
-                  </div>
-                </div>
+                    
+                    <!-- JavaScript -->
+                    <script>
+                      const form = document.getElementById('form');
+                      const successPopup = document.getElementById('successPopup');
+                    
+                      form.addEventListener('submit', async (e) => {
+                        e.preventDefault(); // Prevent form from refreshing the page
+                    
+                        // Collect form data
+                        const formData = new FormData(form);
+                        const data = Object.fromEntries(formData.entries());
+                    
+                        try {
+                          const response = await fetch('http://localhost:3000/submit-form', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data),
+                          });
+                    
+                          if (response.ok) {
+                            // Show success popup
+                            successPopup.style.display = 'block';
+                    
+                            // Hide the popup after 3 seconds
+                            setTimeout(() => {
+                              successPopup.style.display = 'none';
+                            }, 3000);
+                    
+                            // Optionally, clear the form
+                            form.reset();
+                          } else {
+                            alert('Failed to send message. Please try again.');
+                          }
+                        } catch (error) {
+                          console.error('Error:', error);
+                          alert('An error occurred. Please try again.');
+                        }
+                      });
+                    </script>
 
               </div>
             </div>
