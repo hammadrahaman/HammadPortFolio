@@ -31,7 +31,7 @@ app.post('/submit-form', (req, res) => {
   };
 
   const cors = require('cors');
-app.use(cors({ origin: 'https://hammadrahaman.github.io' })); // Allow only your frontend domain
+  app.use(cors({ origin: 'https://hammadrahaman.github.io' })); // Allow only your frontend domain// Allow only your frontend domain
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
